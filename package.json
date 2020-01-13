@@ -2,7 +2,7 @@
     "name": "inverse-search",
     "displayName": "Inverse Search",
     "description": "select everything in document except the searched word",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "ctf0",
     "repository": "https://github.com/ctf0/vscode-inverse-search",
     "engines": {
@@ -29,6 +29,21 @@
                     "when": "resourceScheme =~ /(file|untitled)/"
                 }
             ]
+        },
+        "configuration": {
+            "title": "Inverse Search",
+            "properties": {
+                "inverse_search.includeStart": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "include text before first match"
+                },
+                "inverse_search.includeEnd": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "include text after last match"
+                }
+            }
         }
     },
     "scripts": {

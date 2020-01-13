@@ -1,10 +1,21 @@
 const vscode = require('vscode')
 const escapeStringRegexp = require('escape-string-regexp')
+const PACKAGE_NAME = 'inverse_search'
+
+let config = {}
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
+    await readConfig()
+
+    vscode.workspace.onDidChangeConfiguration(async (e) => {
+        if (e.affectsConfiguration(PACKAGE_NAME)) {
+            await readConfig()
+        }
+    })
+
     context.subscriptions.push(
         vscode.commands.registerCommand('inverse.search', async () => {
             let searchFor = await vscode.window.showInputBox({
@@ -46,6 +57,14 @@ async function activate(context) {
                     )
                 )
 
+                if (!config.includeStart) {
+                    arr.shift()
+                }
+
+                if (!config.includeEnd) {
+                    arr.pop()
+                }
+
                 if (arr.length) {
                     return editor.selections = arr
                 } else {
@@ -54,6 +73,10 @@ async function activate(context) {
             }
         })
     )
+}
+
+async function readConfig() {
+    return config = await vscode.workspace.getConfiguration(PACKAGE_NAME)
 }
 
 function deactivate() { }
